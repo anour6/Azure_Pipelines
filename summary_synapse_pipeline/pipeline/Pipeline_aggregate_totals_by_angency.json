@@ -1,0 +1,48 @@
+{
+	"name": "Pipeline_aggregate_totals_by_angency",
+	"properties": {
+		"activities": [
+			{
+				"name": "aggregation_summary",
+				"type": "SynapseNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebook": {
+						"referenceName": "summary_notebook_1",
+						"type": "NotebookReference"
+					},
+					"parameters": {
+						"param_fiscalyear": {
+							"value": {
+								"value": "@pipeline().parameters.pl_fisc_param",
+								"type": "Expression"
+							},
+							"type": "int"
+						}
+					},
+					"snapshot": true,
+					"sparkPool": {
+						"referenceName": "nycprollpool",
+						"type": "BigDataPoolReference"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"pl_fisc_param": {
+				"type": "int"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-05-18T02:52:40Z"
+	},
+	"type": "Microsoft.Synapse/workspaces/pipelines"
+}

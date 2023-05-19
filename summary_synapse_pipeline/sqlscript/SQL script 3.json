@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 3",
+	"properties": {
+		"content": {
+			"query": "DROP EXTERNAL TABLE [dbo].[NYC_Payroll_Data_2021]\nGO\nDROP EXTERNAL TABLE [dbo].[NYC_Payroll_AGENCY_MD]\nDROP EXTERNAL TABLE [dbo].[NYC_Payroll_TITLE_MD]\nDROP EXTERNAL TABLE [dbo].[NYC_Payroll_EMP_MD]\n\nDROP EXTERNAL FILE FORMAT [SynapseDelimitedTextFormat]\n\ndrop table [dbo].[NYC_Payroll_Data]\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "payrollPool",
+				"poolName": "payrollPool"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
