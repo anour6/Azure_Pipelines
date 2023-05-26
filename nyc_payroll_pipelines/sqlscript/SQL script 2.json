@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 2",
+	"properties": {
+		"content": {
+			"query": "IF NOT EXISTS (SELECT * FROM sys.external_file_formats WHERE name = 'SynapseDelimitedTextFormat') \n\tCREATE EXTERNAL FILE FORMAT [SynapseDelimitedTextFormat] \n\tWITH ( FORMAT_TYPE = DELIMITEDTEXT ,\n\t       FORMAT_OPTIONS (\n\t\t\t FIELD_TERMINATOR = ',',\n\t\t\t FIRST_ROW  = 2,\n\t\t\t USE_TYPE_DEFAULT = FALSE\n\t\t\t))\nGO\n\nIF NOT EXISTS (SELECT * FROM sys.external_data_sources WHERE name = 'adlsnycpayroll-ahlam-a_bikesharestorage_dfs_core_windows_net') \n\tCREATE EXTERNAL DATA SOURCE [adlsnycpayroll-ahlam-a_bikesharestorage_dfs_core_windows_net] \n\tWITH (\n\t\tLOCATION = 'abfss://adlsnycpayroll-ahlam-a@bikesharestorage.dfs.core.windows.net', \n\t\tTYPE = HADOOP \n\t)\nGO\n\nCREATE EXTERNAL TABLE [dbo].[NYC_Payroll_EMP_MD] (\n\t[EmployeeID] [varchar](10) NULL,\n    [LastName] [varchar](20) NULL,\n    [FirstName] [varchar](20) NULL\n\t)\n\tWITH (\n\tLOCATION = 'dirpayrollfiles/EmpMaster.csv',\n\tDATA_SOURCE = [adlsnycpayroll-ahlam-a_bikesharestorage_dfs_core_windows_net],\n\tFILE_FORMAT = [SynapseDelimitedTextFormat]\n\t)\nGO\n\n\nSELECT TOP 100 * FROM [dbo].[NYC_Payroll_EMP_MD]\nGO\n\nCREATE EXTERNAL TABLE [dbo].[NYC_Payroll_TITLE_MD](\n    [TitleCode] [varchar](10) NULL,\n    [TitleDescription] [varchar](100) NULL\n)\nWITH (\n\t\tLOCATION = 'dirpayrollfiles/TitleMaster.csv',\n\tDATA_SOURCE = [adlsnycpayroll-ahlam-a_bikesharestorage_dfs_core_windows_net],\n      FILE_FORMAT = [SynapseDelimitedTextFormat]\n)\nGO\n\nSELECT TOP 100 * FROM [dbo].[NYC_Payroll_TITLE_MD]\n\n-----------------------------------------------------\nCREATE EXTERNAL TABLE [dbo].[NYC_Payroll_AGENCY_MD](\n    [AgencyID] [varchar](10) NULL,\n    [AgencyName] [varchar](50) NULL\n)\nWITH (\n      LOCATION = 'dirpayrollfiles/AgencyMaster.csv',\n\tDATA_SOURCE = [adlsnycpayroll-ahlam-a_bikesharestorage_dfs_core_windows_net],\n      FILE_FORMAT = [SynapseDelimitedTextFormat]\n)\nGO\nSELECT TOP 100 * FROM [dbo].[NYC_Payroll_AGENCY_MD]\n\n---------------------------------------------------------------------------------------------\n\nCREATE EXTERNAL TABLE [dbo].[NYC_Payroll_Data_2021](\n    [FiscalYear] [varchar](20) NULL,\n    [PayrollNumber][varchar](20) NULL,\n    [AgencyID] [varchar](20) NULL,\n    [AgencyName] [varchar](50) NULL,\n    [EmployeeID] [varchar](20) NULL,\n    [LastName] [varchar](20) NULL,\n    [FirstName] [varchar](20) NULL,\n    [AgencyStartDate] varchar(50) NULL,\n    [WorkLocationBorough] [varchar](50) NULL,\n    [TitleCode] [varchar](20) NULL,\n    [TitleDescription] [varchar](100) NULL,\n    [LeaveStatusasofJune30] [varchar](50) NULL,\n    [BaseSalary] [varchar] (50) NULL,\n    [PayBasis] [varchar](50) NULL,\n    [RegularHours] [varchar](50) NULL,\n    [RegularGrossPaid] [varchar](50) NULL,\n    [OTHours] [varchar](50) NULL,\n    [TotalOTPaid] [varchar](50) NULL,\n    [TotalOtherPay] [varchar](50) NULL\n) \nWITH (\n\t\tLOCATION = 'dirpayrollfiles/nycpayroll_2021.csv',\n\tDATA_SOURCE = [adlsnycpayroll-ahlam-a_bikesharestorage_dfs_core_windows_net],\n      FILE_FORMAT = [SynapseDelimitedTextFormat]\n)\nGO\n\nSELECT TOP 100 * FROM [dbo].[NYC_Payroll_Data_2021]",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "payrollPool",
+				"poolName": "payrollPool"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

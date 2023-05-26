@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 1",
+	"properties": {
+		"content": {
+			"query": "IF NOT EXISTS (SELECT * FROM sys.external_file_formats WHERE name = 'SynapseDelimitedTextFormat')\nCREATE EXTERNAL FILE FORMAT [SynapseDelimitedTextFormat] \n    WITH ( FORMAT_TYPE = DELIMITEDTEXT ,\n           FORMAT_OPTIONS (\n             FIELD_TERMINATOR = ',',\n             USE_TYPE_DEFAULT = FALSE\n            ))\nGO\n(SELECT * FROM sys.external_file_formats WHERE name = 'SynapseDelimitedTextFormat') \n\n\n \n    CREATE EXTERNAL DATA SOURCE [bikesharestorage_adlsnycpayroll-ahlam-a_dfs_core_windows_net]\n    WITH (\n        LOCATION = 'abfss://bikesharestorage@adlsnycpayroll-ahlam-a.dfs.core.windows.net'\n         \n    )\nGO\n(SELECT * FROM sys.external_data_sources WHERE name = 'bikesharestorage_adlsnycpayroll-ahlam-a_dfs_core_windows_net') \n\n\n--Create Emplyee Master Data table:\nCREATE  EXTERNAL TABLE [dbo].[NYC_Payroll_EMP_MD](\n    [EmployeeID] [varchar](10) NULL,\n    [LastName] [varchar](20) NULL,\n    [FirstName] [varchar](20) NULL\n)\nWITH (\n\t\tLOCATION = 'adlsnycpayroll-ahlam-a/dirpayrollfiles/EmpMaster.csv',\n      DATA_SOURCE = [bikesharestorage_adlsnycpayroll-ahlam-a_dfs_core_windows_net],\n      FILE_FORMAT = [SynapseDelimitedTextFormat]\n)\nGO\n\n\nselect top 20 * from [dbo].[NYC_Payroll_EMP_MD]",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "payrollPool",
+				"poolName": "payrollPool"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
